@@ -1,0 +1,8 @@
+{
+  "SECRET_KEY": "django-insecure-3r7_zwhb5e&_$$wk2wh@7i2*iv8&jddvw*q5meq^-a)$h(*h5l",
+  "EMAIL_USER": "mycollegeapplication.net@gmail.com",
+  "EMAIL_PASS": "Modern",
+  "DB_NAME": "CCdb",
+  "DB_USER": "CCdbuser",
+  "DB_PASS": ""
+}
