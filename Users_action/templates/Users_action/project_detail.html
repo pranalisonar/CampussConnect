@@ -1,0 +1,26 @@
+{% extends "main/layout.html" %}
+{% block content %}
+
+    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+    <!--  project detail -->
+    <div>
+        <div class="col s12 m6">
+            <div class="card card-panel hoverable" style="padding: 0px;">
+                <div class="card-content">
+                    <h6 style="float:right; margin-right: 29px;">by-
+                        <b>{{ project.projects_author }}</b>
+                    </h6>
+                    <h4 class="blue-text">{{ project.project_title }}</h4>
+                    {% if project.projects_author.id == user.id %}
+                    <a href="{% url 'project_update' project.id %}" class="btn green"><small>Update</small></a>
+                    <a href="{% url 'project_delete' project.id %}" class="btn red"><small>Delete</small></a>
+                    {% endif %}
+                    <hr style="margin-bottom: 5px;">
+                    
+                    <p style="font-family:-webkit-pictograph;">{{ project.project_journey|safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+{% endblock content %}

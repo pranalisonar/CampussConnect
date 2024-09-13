@@ -1,0 +1,52 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+<!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+<!--  search question form form-->
+<form action="{% url 'search_question_paper' %}" class="d-flex" method="POST">
+  {% csrf_token %}
+  <nav style="background-color: #84a3d4;">
+    <div class="nav-wrapper">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" name="Search_question_paper" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav>
+</form>
+<!-- end of form -->
+
+<table class="striped responsive-table container">
+  <thead>
+    <tr>
+      <th>Subject Name</th>
+      <th>Class_year</th>
+      <th>Exam pattern</th>
+      <th>Exam Date</th>
+      <th>uploader</th>
+      <th>download option</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for paper in AllQuestionPapers %}
+    <tr>
+      <td>{{ paper.Subject_name }}</td>
+      <td>{{ paper.Class_year }}</td>
+      <td>{{ paper.Exam_pattern }}</td>
+      <td>{{ paper.Exam_Month }} {{ paper.Exam_Year }}</td>
+      <td><a href="{% url 'profile_info' paper.Uploader.profile.id %}">{{ paper.Uploader }}</a></td>
+
+      <td style="margin-top:5px">
+        <a href="{% url 'question_paper_download' paper.id %}">Download</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

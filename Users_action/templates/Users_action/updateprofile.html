@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include "main/includes/profile_baselinks.html"%}
+  {% include "main/includes/Base_links.html"%}
+
+  <style>
+    a:hover {
+      color: #9fbfe0;
+      text-decoration: none;
+    }
+  </style>
+    <title>Update Profile</title>
+</head>
+
+<body>
+    {% load crispy_forms_tags %}
+    {% include "main/includes/nav.html"%}
+
+    <div class="content-section container">
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <legend class="border-bottom mb-4">Update Profile</legend>
+            {{ U_form|crispy }}
+            {{ P_form|crispy }}
+          <button class="btn btn-outline-info" type="submit" style="float: right;"> Update </button>
+        </fieldset>
+      </form>
+    </div>
+{% include "main/includes/script_messages.html"%}
+
+</body>
+
+</html>

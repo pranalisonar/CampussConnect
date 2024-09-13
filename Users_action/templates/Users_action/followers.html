@@ -1,0 +1,24 @@
+{% extends "main/layout.html" %}
+{% block content %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/- -->
+    <div class="container">
+        <p>({{followers.count}}) follower(s)</p>
+        <ul class="collection">
+            {% for i in followers %}
+            <li class="collection-item avatar">
+              <img src="{{i.profile.user_image.url}}" alt="" class="circle">
+              <a href="{% url 'profile_info' i.profile.id %}" class="title">{{ i.profile.app_user }}</a>
+              <p><a href="{% url 'profile_info' i.profile.id %}" class="title">
+                {{i.profile.app_user.first_name}} {{ i.profile.app_user.last_name }}
+                </a></p>
+              <p>{{ i.profile.current_status }}</p>
+              {% if i.profile.app_user.is_staff %}
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  {% endblock content %}

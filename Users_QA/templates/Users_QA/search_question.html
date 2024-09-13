@@ -1,0 +1,59 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!-- all result question -->
+  <div class="row">
+    {% if searches and search_results.count > 0 %}
+      <i style="display:block; font-size: x-large;">All <b class="green-text">{{ search_results.count }}</b> search result(s) for -
+        <b class="green-text"> {{ searches }}</b>
+      </i>
+      {% for question in search_results %}
+        <div class="card-panel" style="margin: 5px; height:auto; margin-bottom:10px;
+                                        padding-bottom: 49px;">
+            <div class="card-content">
+                <img class="circle responsive-img" src="{{ question.q_person.profile.user_image.url }}"
+                    style="width: 60px; height: 60px; float: left; margin: 20px 11px 0px 0px;">
+
+                <h5 style="display: inline-flex;" class="black-text">
+                  <a href="{% url 'profile_info' question.q_person.profile.id %}"><b>{{ question.q_person }}</b></a>
+                </h5>
+                <h6 style="display: inline-flex;">{{ question.q_date }}</h6>
+                <h6 style="display: flex; margin: 0px;" class="grey-text darken-4">{{ question.q_person.profile.current_status }}</h6>
+
+                <h5 class="font"><b>Question:</b></h5>
+                <h6 class="blue-grey-text darken-4">
+                  <b style="margin-left: 100px;">{{ question.question|safe }}</b>
+                </h6>
+                <small class="blue-text" style="display:block;">all answer ({{ question.answer.count }})</small>
+
+                <div class="card-content">
+                    <a href="#" class="waves-effect waves-light btn"
+                        style="color:#000000; background-color:#cfd8dc; float: left; margin-right: 23px;">Answer</a>
+                    {% if question.answer.count > 0 %}
+                      <a href="{% url 'questions-ans' question.id %}" class="waves-effect waves-light btn"
+                          style="color:#000000; background-color:#dacdcd; float: left;">Older Ans</a>
+                    {% endif %}
+                </div>
+
+                <form action="{% url 'questions-like' question.id %}" method="post" style="display: inline-block;">
+                  {% csrf_token %}
+                  {% if user.is_authenticated %}
+                    <button type="submit" name="question_id" value="{{ question.id }}" style="border: none; display: contents;">
+                      <i style="width: 7%; margin: 7px -6px 0px 11px; color:red;" class="material-icons">favorite</i>
+                    </button>
+                    <span style="margin-left:23px">{{ question.q_likes.count }}-rating</span>
+                  {% endif %}
+                </form>
+            </div>
+        </div>
+      {% endfor %}
+
+    {% else %}
+        <h5><b class="red-text">No search result for - {{ searches }}</b></h5>
+    {% endif %}
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

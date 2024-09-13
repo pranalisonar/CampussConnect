@@ -1,0 +1,20 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!--  add feed form-->
+  {% load crispy_forms_tags %}
+  <div class="content-section container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Add feed</legend>
+        {{ form|crispy }}
+        <button class="btn btn-outline-info" type="submit" style="float: right;"> Add feed </button>
+      </fieldset>
+    </form>
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-// -->
+
+{% endblock content %}

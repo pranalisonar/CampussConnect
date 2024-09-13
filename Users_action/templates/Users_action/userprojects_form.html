@@ -1,0 +1,27 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+<!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+<!--  Add project form-->
+  {% load crispy_forms_tags %}
+  <div class="content-section container">
+      <strong><b style="color:green;">
+        Congratulations on successfully completing of your project. Stuff you learn while completing the project may be help you in future.
+       </b></strong>
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend>Add new Project</legend>
+
+        {{ form.media }}
+        {{ form|crispy }}
+
+        <button class="btn" type="submit" style="float: right;"> add project </button>
+      </fieldset>
+    </form>
+
+  </div>
+<!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

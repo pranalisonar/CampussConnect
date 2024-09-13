@@ -1,0 +1,47 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!-- all blogs -->
+  <div class="row">
+    {% if categories %}
+      <h6 style="margin-left: 9px;">all posts of <b>{{cat_name}}</b></h6>
+      {% for post in categories %}
+        <div class="col s12 m6">
+          <div class="card card-panel hoverable" style="padding: 0px; height: 395px;">
+            <h6 style="float:right; margin-right: 29px;">type-
+              <a href="#">{{ post.Category|slugify }}</a>
+          </h6>
+            <div class="card-content" style="padding: 10px;">
+              <img class="circle img-responsive" src="{{ post.author.profile.user_image.url }}"
+                style="width: 57px; height: 57px; float: left; margin: 12px 11px 0px 0px">
+
+              <a href="{% url 'profile_info' post.author.profile.id %}"> <h5 style="display: flex;" class=" blue-grey-text darken-4">{{ post.author }}</h5> </a>
+              <h6 style="float: right;">{{post.date_posted|date:"d-b-Y"}}</h6>
+              <h6 style="display: contents;" class="grey-text darken-4">{{ post.author.profile.current_status }}</h6>
+              <hr style="margin-bottom: 5px;">
+              <a href="{% url 'post_detail' post.id %}">
+                <p style="font-weight: bolder;margin-bottom: 40px;">{{post.Title}}</p>
+              </a>
+              <p>{{ post.Describe_content }}</p>
+            </div>
+            <div class="card-action ">
+
+              <a href="{% url 'post_detail' post.id %}" class=" red-text accent-4">
+                {{ post.likes.count}}-<small>likes</small>
+              </a>
+
+              <a href="{% url 'post_detail' post.id %}" class="blue-grey-text darken-4">Visit</a>
+
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h5 style="margin-left: 9px; text-align: center;">No posts available currently for <b>{{cat_name}}</b></h5>
+  {% endif %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-// -->
+
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+    <!-- all filed category -->
+    <div class="row">
+        {% for field in field_categories %}
+            <div class="col l4 s12 m6" style="margin-top: -20px">
+                <a href="#" class="waves-effect waves-light" style="color:#000">
+                </a>
+                <div class="card-panel hoverable" style="height:385px; background-color:#FFFFFF;">
+
+                    <div class="card-image">
+                        <img class="responsive-img"
+                            src="{{ field.logo_filed.url }}"
+                            style="width:230px; height:165;">
+                        <br><span class="card-title"><b class="blue-text">{{ field.field_name }}</b></span>
+                    </div>
+
+                    <div class="card-content">
+                        <p style="margin:0px; height: 120px">{{ field.about_field }}</p>
+                    </div>
+
+                    <form action="{% url 'like_field' field.id %}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                           <button type="submit" name="field_id" value="{{ field.id }}" style="border: none; display: contents;">
+                              <i style="width: 7%; margin-left: 10px; color:red;" class="material-icons">favorite</i>
+                           </button>
+                          <span style="margin-left:23px">{{ field.field_likes.count }}-interested</span>
+                        {% endif %}
+
+                    </form>
+
+                    <div class="card-content" style="text-align: right; float: right;">
+
+                        <a href="{% url 'field-questions' field.id %}" class="waves-effect waves-light btn"
+                            style="color:#000000; background-color:#FFD166">View
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

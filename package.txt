@@ -1,0 +1,6 @@
+admin_interface
+pillow
+Django
+ckeditor
+crispy_bootstrap4
+django-crispy_forms

@@ -1,0 +1,27 @@
+{% extends "main/layout.html" %}
+{% block content %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/- -->
+    <div class="container">
+        {% if allProfile.count > 0 %}
+            <ul class="collection">
+                {% for i in allProfile %}
+                  <li class="collection-item avatar">
+                    <img src="{{i.user_image.url}}" alt="" class="circle">
+                    <a href="{% url 'profile_info' i.id %}" class="title">{{ i.app_user }}</a>
+                    <p><a href="{% url 'profile_info' i.id %}" class="title">
+                      {{i.app_user.first_name}} {{ i.app_user.last_name }}
+                    </a></p>
+                    <p>{{ i.current_status }}</p>
+                    {% if i.app_user.is_staff %}
+                      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h5>No search result for <b>{{searched}}</b>, try different naming convection</h5>
+        {% endif %}
+    </div>
+    
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  {% endblock content %}

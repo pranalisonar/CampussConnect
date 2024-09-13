@@ -1,0 +1,35 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!--  commet reply(s)-->
+  <div class="row container">By-
+    <a href="{% url 'profile_info' comment.parent_feed.author.id %}">
+      <h6 class="blue-text" style="display: inline-block;"><b>{{ comment.comment_person }}</b></h6>
+    </a>
+    <span style="display: inline-block;" >{{comment.comment_date|date:"d-b-Y"}}</span>
+    <p style=" margin:0px; margin-left:20px;">{{ comment.comment }}</p>
+    <hr><br>
+
+    <h6>All reply - {{ replies.count }}</h6>
+    {% for comment in replies %}
+      <a href="{% url 'profile_info' comment.comment_reply_person.profile.id %}">
+        <h6 class="blue-text" style="display: inline-block;">
+          <b>{{ comment.comment_reply_person }}</b>
+        </h6>
+      </a>  on -
+      <span style="display: inline-block;margin-left:7px;" >{{comment.comment_reply_date|date:"d-b-Y"}}</span>
+
+      {% if user.id == comment.comment_reply_person.id %}
+        <a href="{% url 'delete_reply' comment.id %}"><i class="material-icons red-text" style="float:right">delete</i></a>
+        <a href="{% url 'update_reply' comment.id %}"><i class="material-icons green-text" style="float:right; margin-right:5px;">update</i></a>
+      {% endif %}
+
+      <b><p style="margin:0px; margin-left:20px;">{{ comment.reply }}</p></b>
+      <br>
+    {% endfor %}
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-// -->
+
+{% endblock content %}

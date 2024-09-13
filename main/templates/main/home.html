@@ -1,0 +1,81 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!-- all blogs -->
+  <form action="{% url 'search' %}" class="d-flex" method="POST">
+    {% csrf_token %}
+    <nav style="background-color: #84a3d4;">
+      <div class="nav-wrapper">
+        <form>
+          <div class="input-field">
+            <input id="search" type="search" name="SearchPost" required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            <i class="material-icons">close</i>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </form>
+
+
+  <div class="row">
+    {% for post in posts %}
+      <div class="col s12 m6">
+        <div class="card card-panel hoverable" style="padding: 0px; height: 395px;">
+          <h6 style="float:right; margin-right: 29px;">type-
+              <a href="{% url 'post_category' post.Category.id post.Category|slugify %}">{{ post.Category|slugify }}</a>
+          </h6>
+
+          <div class="card-content" style="padding: 10px;">
+            <img class="circle img-responsive" src="{{ post.author.profile.user_image.url }}"
+              style="width: 60px; float: left; margin: 12px 11px 0px 0px; height:60px;">
+            <a href="{% url 'profile_info' post.author.profile.id %}"> <h5  class="blue-grey-text darken-4">{{ post.author }}</h5> </a>
+            <h6 style="float: right;">{{post.date_posted|date:"d-b-Y"}}</h6>
+            <h6 style="display: contents;" class="grey-text darken-4">{{ post.author.profile.current_status }}</h6>
+            <hr style="margin-bottom: 5px;">
+            <a  href="{% url 'post_detail' post.id %}">
+              <p style="font-weight: bolder;margin-bottom: 40px;">{{post.Title}}</p>
+            </a>
+            <p>{{ post.Describe_content }}</p>
+          </div>
+
+          <div class="card-action">
+            <a href="{% url 'post_detail' post.id %}" class=" red-text accent-4">
+              {{ post.likes.count}}-<small>likes</small>
+            </a>
+            <a href="{% url 'post_detail' post.id %}" class="blue-grey-text darken-4">Visit</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="container">
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+          <a href="?page=1" class="btn btn-outline-info mb-4">F</a>
+          <!-- <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-info mb-4">P</a> -->
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}       
+              <a href="?page={{ num }}" class="btn btn-info mb-4 red">{{ num }}</a>
+
+          {% elif num > page_obj.number|add:'-4' and  num < page_obj.number|add:'4' %}
+              <a href="?page={{ num }}" class="btn btn-outline-info mb-4">{{ num }}</a>
+
+          {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+          <!-- <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-info mb-4">N</a> -->
+          <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-info mb-4">L</a>
+      {% endif %}
+    {% endif %}
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-// -->
+
+{% endblock content %}

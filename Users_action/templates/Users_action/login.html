@@ -1,0 +1,31 @@
+{% extends "main/layout.html" %}
+{% block content %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/- -->
+  <!--  login form-->
+  {% load crispy_forms_tags %}
+  <div class="content-section container">
+    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Login</legend>
+          {{ form|crispy }}
+        <button class="btn btn-outline-info btn-login" type="submit">Login</button>
+      </fieldset>
+    </form>
+
+    <div class="form-group">
+      <small class="text-muted ml-2">
+        <a href="{% url 'password_reset' %}">Forgot password?</a>
+      </small>
+    </div>
+
+    <div class="border-top pt-3">
+      <small class="text-muted">Don't have an account?
+        <a class="ml-2" href="{% url 'register' %}">Register</a>
+      </small>
+    </div>
+
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+{% endblock content %}

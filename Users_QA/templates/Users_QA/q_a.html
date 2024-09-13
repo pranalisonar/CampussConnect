@@ -1,0 +1,43 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!-- all ans of question -->
+    {% if answers %}
+            <b class="font" style="display: inline-flex; font-size: x-large;">Recent Ans:</b>
+            {% for ans in answers %}
+                <div class="card-panel" style="margin: 5px; height:auto; padding-bottom: 49px;">
+                    <b class="font" style="font-size: small; margin-top: 16px; display: list-item;">
+                        ~ <a href="{% url 'profile_info' ans.a_person.profile.id %}">{{ans.a_person}}</a>
+                        / {{ ans.a_date }}
+                    </b>
+
+                    <p style="color: #415058; width:auto">{{ ans.answer|safe }}</p>
+
+                    <form action="{% url 'ans-like' ans.id %}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                        <button type="submit" name="ans_id" value="{{ ans.id }}" style="border: none; display: contents;">
+                            <i style="width: 7%; margin-left: 10px; color:red;" class="material-icons">favorite</i>
+                        </button>
+                        <span style="margin-left:23px">{{ ans.a_likes.count }}-vot</span>
+                        {% endif %}
+                    </form>
+                    {% if user.id == ans.a_person.id %}
+                        <a href="{% url 'delete-question-ans' ans.id %}"><i class="material-icons red-text" style="float:right">delete</i></a>
+                        <a href="{% url 'update-question-ans' ans.id %}"><i class="material-icons green-text" style="float:right; margin-right:5px;">update</i></a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div style="float:right; position:fixed; bottom: 0; right: 0;">
+                <a class="btn-floating btn-large cyan pulse" href="{% url 'add-question-ans' question.id %}">
+                <i class="material-icons">add</i>
+                </a>
+            </div>
+    {% else %}
+        <h4 class="blue-text">No Questions Available To Show</h4>
+    {% endif %}
+    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

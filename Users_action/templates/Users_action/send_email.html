@@ -1,0 +1,22 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!--  Register form-->
+  {% load crispy_forms_tags %}
+  <div class="content-section container">
+
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">send email</legend>
+          {{ form|crispy }}
+        <button class="btn btn-outline-info" type="submit" style="float: right;"> send </button>
+      </fieldset>
+    </form>
+
+  </div>
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}

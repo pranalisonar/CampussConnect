@@ -1,0 +1,79 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!--  add feed form-->
+  <button class="btn yellow accent-1" style="float:right; margin: 9px 10px 0px 0px;">
+      <a href="{% url 'add_feed' %}" class="black-text">Add your memory</a>
+  </button>
+  <div class="row" style="padding: 11px;">
+    {% for feed in feeds %}
+        <div class="card-panel"  style="margin-top: 12px; display: inline-table; padding: 11px 6px 6px 6px;">
+          <div class="chip" style="float:right; margin: auto">
+          {{ feed.Add_tag }}
+          </div>
+
+          <div >
+            <img src="{{ feed.author.user_image.url }}" alt="loading.." class="circle img-responsive"
+            style="width: 70px; float: left; margin-right:11px; height:70px;">
+            <div class="mt-3">
+                <a href="{% url 'profile_info' feed.author.id %}">
+                    <h4 class="blue-grey-text darken-4" style="margin: 0px;">{{ feed.author.app_user.username }}</h4>
+                </a>
+                <h6 style="float: right; margin-top: revert;">{{feed.feed_date|date:"d-b-Y"}}</h6>
+                <p class="text-secondary mb-1" style="display: inline-block;">{{ feed.author.current_status }}</p>
+            </div>
+          </div><hr>
+
+          <ul class="collapsible">
+            <li>
+              <div class="collapsible-header">
+                  {{ feed.Add_note|slice:":40"}}
+                  <u style="margin-left: 2px;margin-top: 2px;">
+                    <i class="material-icons">more_horiz..more_horiz</i>
+                  </u>
+              </div>
+              <div class="collapsible-body"><p style="margin:0px;">{{ feed.Add_note|safe }}</p></div>
+            </li>
+          </ul>
+
+          <div class="center">
+              {% if feed.Add_file.url|slice:"-4:" == ".mp4" %}
+                  <video class="responsive-video" width="650" controls>
+                      <source src="{{ feed.Add_file.url }}" type="video/mp4">
+                  </video>
+              {% else %}
+                <img class="responsive-img" width="650" src="{{ feed.Add_file.url }}">
+              {% endif %}
+          </div>
+
+          <form action="{% url 'like_feed' feed.id %}" method="post" style="display: inline-block;">
+              {% csrf_token %}
+              {% if user.is_authenticated %}
+                  <button type="submit" name="feed_id" value="{{ feed.id }}" style="border: none; display: contents;">
+                    <i style="width: 7%; margin-left: 10px; color:red;" class="material-icons">favorite</i>
+                  </button>
+                <span style="margin-left:23px">{{ feed.feed_likes.count }}-likes</span>
+              {% endif %}
+          </form>
+
+          <a href="{% url 'feed_comments' feed.id %}"><i class="material-icons">comments</i></a>
+          <span>{{ feed.comment_model.count }} - comments</span>
+          {% if user.profile.id == feed.author.id %}
+              <a href="{% url 'delete_feed' feed.id %}"><i class="material-icons red-text" style="float:right">delete</i></a>
+              <a href="{% url 'update_feed' feed.id %}"><i class="material-icons green-text" style="float:right; margin-right:5px;">update</i></a>
+          {% endif %}
+
+        </div>
+    {% endfor %}
+      <div style="float:right; position:fixed; bottom: 0; right: 0;">
+        <a class="btn-floating btn-large cyan pulse" href="{% url 'add_feed' %}">
+        <i class="material-icons">add</i>
+        </a>
+      </div>
+  </div>
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-// -->
+
+{% endblock content %}

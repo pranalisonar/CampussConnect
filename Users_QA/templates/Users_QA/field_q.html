@@ -1,0 +1,88 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+  <!-- all filed category questions -->
+  {% if questions %}
+    <form action="{% url 'questions-search' field.id %}" class="d-flex" method="POST">
+      {% csrf_token %}
+      <nav style="background-color: #84a3d4;">
+        <div class="nav-wrapper">
+          <form>
+            <div class="input-field">
+              <input id="search" type="search" name="Q_search" required>
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+          </form>
+        </div>
+      </nav>
+    </form>
+
+    <div class="row">
+      <div class="collection container">
+        <a href="{% url 'ans' field.id %}" class="collection-item"><span class="badge">{{answered}}</span>Answered</a>
+        <a href="{% url 'exp' field.id %}" class="collection-item"><span class="new badge red">{{not_ans}}</span>Not Answered</a>
+        <a href="#!" class="collection-item"><span class="badge">{{total}}</span>total</a>
+      </div>
+      <h6 class="blue-text" style="text-align:center;">All Questions Available for {{ field.field_name }}</h6>
+      {% for question in questions %}
+        <div class="card-panel" style="margin: 5px; height:auto; margin-bottom:10px;
+                                      padding-bottom: 49px;">
+          <div class="card-content">
+              <img class="circle responsive-img" src="{{ question.q_person.profile.user_image.url }}"
+                  style="width: 60px; height: 60px; float: left; margin: 7px 11px 0px 0px;">
+
+              <h5 style="display: inline-flex;" class="black-text">
+                <a href="{% url 'profile_info' question.q_person.profile.id %}"><b>{{ question.q_person }}</b></a>
+              </h5>
+              <h6 style="display: inline-flex;">{{ question.q_date }}</h6>
+              <h6 style="display: flex; margin: 0px;" class="grey-text darken-4">{{ question.q_person.profile.current_status }}</h6>
+                <hr>
+              <h5 class="font" style="margin-bottom:-30px;"><b>Question:</b></h5>
+              <h6 class="blue-grey-text darken-4">
+                <b style="margin-left: 100px;">{{ question.question|safe }}</b>
+              </h6>
+              <small class="blue-text" style="display:block;">all answer ({{ question.answer.count }})</small>
+
+              <div class="card-content">
+                  <a href="{% url 'add-question-ans' question.id %}" class="waves-effect waves-light btn"
+                      style="color:#000000; background-color:#cfd8dc; float: left; margin-right: 23px;">Answer</a>
+
+                  {% if question.answer.count > 0 %}
+                    <a href="{% url 'questions-ans' question.id %}" class="waves-effect waves-light btn"
+                       style="color:#000000; background-color:#dacdcd; float: left;">Older Ans</a>
+                  {% endif %}
+              </div>
+
+              <form action="{% url 'questions-like' question.id %}" method="post" style="display: inline-block;">
+                {% csrf_token %}
+                  {% if user.is_authenticated %}
+                    <button type="submit" name="question_id" value="{{ question.id }}" style="border: none; display: contents;">
+                        <i style="width: 7%; margin: 7px -6px 0px 11px; color:red;" class="material-icons">favorite</i>
+                    </button>
+                    <span style="margin-left:23px">{{ question.q_likes.count }}-rating</span>
+                  {% endif %}
+              </form>
+
+              {% if user.id == question.q_person.id %}
+                <a href="{% url 'questions-delete' question.id %}"><i class="material-icons red-text" style="float:right">delete</i></a>
+                <a href="{% url 'questions-update' question.id %}"><i class="material-icons green-text" style="float:right; margin-right:5px;">update</i></a>
+              {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      <div style="float:right; position:fixed; bottom: 0; right: 0;">
+        <a class="btn-floating btn-large cyan pulse" href="{% url 'ask_question' field.id %}">
+        <i class="material-icons">add</i>
+      </a>
+      </div>
+    </div>
+  {% else %}
+    <h6>No Questions Available To Show for {{ field.field_name }}</h6>
+    <a href="{% url 'ask_question' field.id %}"><u>Be the first to add!!</u></a>
+  {% endif %}
+  <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
+
+{% endblock content %}
